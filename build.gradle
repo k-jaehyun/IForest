@@ -30,6 +30,7 @@ dependencies {
 	// json
 	implementation 'org.json:json:20230227'
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -40,6 +41,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.mockito:mockito-core:4.8.0'
 }
 
 tasks.named('test') {
