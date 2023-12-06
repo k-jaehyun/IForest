@@ -1,5 +1,6 @@
 package com.sparta.iforest.post;
 
+import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class PostController {
 
     private final PostService postService;
     private final JwtUtil jwtUtil;
+    //private final CommonResponseDto commonResponseDto;
 
 
     //게시글 생성
