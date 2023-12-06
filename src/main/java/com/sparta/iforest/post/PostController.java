@@ -3,12 +3,15 @@ package com.sparta.iforest.post;
 import com.sparta.iforest.Jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequestMapping ("/api/posts")
@@ -46,6 +49,29 @@ public class PostController {
         return ResponseEntity.ok().body(postResponseDtoList);
     }
 
+
+    //게시글 수정
+
+
+    //게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long postId, HttpServletRequest httpServletRequest){
+        try{
+            postService.deletePost(postId, jwtUtil.getUsernameFromHeader(httpServletRequest));
+            return redirectToGetAllPost();
+        }catch (IllegalArgumentException | RejectedExecutionException e){
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
+        }
+
+
+
+    }
+
+    private ResponseEntity<CommonResponseDto> redirectToGetAllPost() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/posts"));
+        return new ResponseEntity(headers,HttpStatus.MOVED_PERMANENTLY);
+    }
 
 
 }

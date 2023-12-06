@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,29 @@ public class PostService {
         return postResponseDtoList;
     }
 
+    //게시글 수정
 
+
+    //게시글 삭제
+    public Post deletePost(Long postId, String username){
+        //로그인한 사용자와 게시글 작성자 검증
+        Post post = checkLoginUserAndPostUser(postId, username);
+        //delete
+        postRepository.deleteById(postId);
+        return post;
+    }
+
+    private Post checkLoginUserAndPostUser(Long postId, String username) {
+        //Id로 게시물 조회
+        Post post = postRepository.findById(postId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        //로그인한 사용자의 username 추출 및 해당 사용자가 작성한 게시물 조회
+        postRepository.findByUser_Username(username).orElseThrow(()-> new IllegalArgumentException("로그인한 사용자가 작성한 게시물이 없습니다."));
+        //게시글 작성자와 로그인한 작성자가 일치하는지 검증
+        if(!username.equals(post.getUser().getUsername())){
+            throw new IllegalArgumentException("작성자만 게시글을 수정/삭제 할 수 있습니다.");
+        }
+        return post;
+    }
 
 
 }
