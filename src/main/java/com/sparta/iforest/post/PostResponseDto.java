@@ -1,11 +1,15 @@
 package com.sparta.iforest.post;
 
+
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
-public class PostResponseDto {
+@Getter
+@Setter
+public class PostResponseDto extends CommonResponseDto{
 
     private long id;
     private String title;
