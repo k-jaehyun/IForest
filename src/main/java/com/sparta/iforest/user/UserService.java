@@ -4,6 +4,7 @@ import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.token.Token;
 import com.sparta.iforest.token.TokenRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -61,10 +62,11 @@ public class UserService {
         }
 
         // header에 Role이 담긴 JwtToken탑재
-        String token = jwtUtil.createToken(requestDto.getUsername(),user.getRole());
-        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        String bearerToken = jwtUtil.createToken(requestDto.getUsername(),user.getRole());
+        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, bearerToken);
 
-        // 토큰을 table에 넣는다
+        // 토큰을 table에 넣는다.
+        String token = bearerToken.substring(7);
         Token tokenObject = new Token(token);
         tokenRepository.save(tokenObject);
 
@@ -76,8 +78,10 @@ public class UserService {
         }
     }
 
-    public void logout(UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
-
+    public void logout(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
+        String token = bearerToken.substring(7);
+        Token tokenObject = tokenRepository.findByToken(token);
+        tokenRepository.delete(tokenObject);
     }
 }

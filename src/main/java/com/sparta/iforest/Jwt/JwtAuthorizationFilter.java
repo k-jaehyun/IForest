@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if(Objects.nonNull(token) && tokenRepository.findByToken(token)) {
+        if(Objects.nonNull(token) && Objects.nonNull(tokenRepository.findByToken(token))) {
             if (jwtUtil.validateToken(token)) {
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 

@@ -4,12 +4,12 @@ import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.exception.FieldErrorDto;
 import com.sparta.iforest.exception.FieldErrorException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +43,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<CommonResponseDto> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        userService.logout(userDetails);
+    public ResponseEntity<CommonResponseDto> logout(HttpServletRequest request) {
+        userService.logout(request);
         return ResponseEntity.status(HttpStatus.OK.value()).body(new CommonResponseDto("로그아웃 성공",HttpStatus.OK.value()));
     }
 
