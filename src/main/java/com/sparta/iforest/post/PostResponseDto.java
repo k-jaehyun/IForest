@@ -22,7 +22,7 @@ public class PostResponseDto extends CommonResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.createdAt = post.getCreatedAt();
         this.user = post.getUser().getUsername();
+        this.createdAt = post.getCreatedAt();
     }
 }
