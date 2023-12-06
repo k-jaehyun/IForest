@@ -15,7 +15,6 @@ public class PostResponseDto extends CommonResponseDto {
     private long id;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
     private String user;
 
     public PostResponseDto(Post post) {
@@ -23,6 +22,5 @@ public class PostResponseDto extends CommonResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.user = post.getUser().getUsername();
-        this.createdAt = post.getCreatedAt();
     }
 }
