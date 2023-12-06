@@ -9,12 +9,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,6 +39,19 @@ public class UserController {
         userService.login(requestDto);
         res.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername()));
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto("로그인 성공",HttpStatus.OK.value()));
+    }
+    @ResponseBody
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody @Valid ProfileRequestDto requestDto,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
+        }
+
+        ProfileResponseDto profileResponseDto = userService.updateProfile(requestDto, userDetails.getUser());
+
+        return ResponseEntity.ok(profileResponseDto);
     }
 
 

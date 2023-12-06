@@ -38,4 +38,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
+
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+    }
 }
