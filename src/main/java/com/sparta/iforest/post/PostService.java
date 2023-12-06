@@ -53,6 +53,20 @@ public class PostService {
         return postResponseDtoList;
     }
 
+    //작성자별 게시물 조회
+    public List<PostResponseDto> getPostByUser(String username) {
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        //로그인한 사용자의 username 추출 및 해당 사용자가 작성한 게시물 조회
+        List<Post> postList = new ArrayList<>();
+        postList = postRepository.findByUser_Username(username).orElseThrow(()-> new IllegalArgumentException("로그인한 사용자가 작성한 게시물이 없습니다."));
+        //Entity List -> Dto List
+        postList.forEach(post -> {
+            var postDto = new PostResponseDto(post);
+            postResponseDtoList.add(postDto);
+        });
+        return postResponseDtoList;
+    }
+
     //게시글 수정
     @Transactional
     public PostResponseDto updatePost(Long postId, PostRequestDto dto, String username) {
@@ -87,7 +101,6 @@ public class PostService {
         }
         return post;
     }
-
 
 
 }

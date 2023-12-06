@@ -50,7 +50,13 @@ public class PostController {
     }
 
     //작성자별 게시물 조회
-
+    @GetMapping("/request-param")
+    public ResponseEntity<List<PostResponseDto>> getPostByUser(@RequestParam ("user") String username){
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        postResponseDtoList = postService.getPostByUser(username);
+        return ResponseEntity.ok().body(postResponseDtoList);
+        //캐치 해야함
+    }
 
     //게시글 수정
     @PutMapping("/{postId}")
