@@ -59,6 +59,7 @@ public class WebSecurityConfig {
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        // 접근불가 페이지 생성시 활용
         http.exceptionHandling(config -> {
             config.authenticationEntryPoint(errorPoint());
             config.accessDeniedHandler(accessDeniedHandler());
