@@ -15,14 +15,14 @@ public class Token {
     private Long id;
 
     @Column
-    private String token;
+    private String tokenValue;
 
     @JoinColumn(name = "user_id", nullable = false)
     @OneToOne
     private User user;
 
     public Token(String token, User user) {
-        this.token=token;
+        this.tokenValue=token;
         this.user=user;
     }
 

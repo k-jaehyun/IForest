@@ -64,7 +64,7 @@ public class UserService {
         // 이미 로그인 되어 있는지 확인
         if (!tokenRepository.findByUser(user).isEmpty()) {
             Token token = tokenRepository.findByUser(user).orElseThrow(()-> new IllegalArgumentException("존재하는데 존재하지 않는 발생할리 없는 에러"));
-            String beareredToken = jwtUtil.BEARER_PREFIX+token.getToken();
+            String beareredToken = jwtUtil.BEARER_PREFIX+token.getTokenValue();
             response.setHeader(JwtUtil.AUTHORIZATION_HEADER,beareredToken);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(new CommonResponseDto("이미 로그인 되어 있습니다.",HttpStatus.BAD_REQUEST.value()));
         }
@@ -89,7 +89,7 @@ public class UserService {
     public void logout(HttpServletRequest request) {
         String bearerToken = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
         String token = bearerToken.substring(7);
-        Token tokenObject = tokenRepository.findByToken(token).orElseThrow(()-> new IllegalArgumentException("해당 토큰이 존재하지 않습니다."));
+        Token tokenObject = tokenRepository.findByTokenValue(token).orElseThrow(()-> new IllegalArgumentException("해당 토큰이 존재하지 않습니다."));
         tokenObject.setUser(null);  // Detach 전에 User 객체를 null로 설정
         tokenRepository.delete(tokenObject);
     }
