@@ -49,8 +49,21 @@ public class PostController {
         return ResponseEntity.ok().body(postResponseDtoList);
     }
 
+    //작성자별 게시물 조회
+
 
     //게시글 수정
+    @PutMapping("/{postId}")
+    public ResponseEntity<CommonResponseDto> updatePost(@PathVariable Long postId,
+                                                        @RequestBody PostRequestDto postRequestDto,
+                                                        HttpServletRequest httpServletRequest){
+        try {
+            PostResponseDto responseDto = postService.updatePost(postId,postRequestDto,jwtUtil.getUsernameFromHeader(httpServletRequest));
+            return ResponseEntity.ok().body(responseDto);
+        }catch (IllegalArgumentException |  RejectedExecutionException e){
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
+        }
+    }
 
 
     //게시글 삭제
@@ -67,6 +80,7 @@ public class PostController {
 
     }
 
+    //기본 페이지로 리턴
     private ResponseEntity<CommonResponseDto> redirectToGetAllPost() {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/api/posts"));

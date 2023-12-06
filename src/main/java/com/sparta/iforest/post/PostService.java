@@ -5,6 +5,7 @@ import com.sparta.iforest.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,17 @@ public class PostService {
     }
 
     //게시글 수정
+    @Transactional
+    public PostResponseDto updatePost(Long postId, PostRequestDto dto, String username) {
+        //로그인한 사용자와 게시글 작성자 검증
+        Post post = checkLoginUserAndPostUser(postId, username);
+        //수정
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        postRepository.save(post);
+        return new PostResponseDto(post);
+
+    }
 
 
     //게시글 삭제
@@ -75,6 +87,7 @@ public class PostService {
         }
         return post;
     }
+
 
 
 }
