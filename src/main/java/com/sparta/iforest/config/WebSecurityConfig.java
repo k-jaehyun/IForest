@@ -3,6 +3,7 @@ package com.sparta.iforest.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.Jwt.JwtAuthorizationFilter;
 import com.sparta.iforest.Jwt.JwtUtil;
+import com.sparta.iforest.token.TokenRepository;
 import com.sparta.iforest.user.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -29,6 +30,8 @@ public class WebSecurityConfig {
 
     private final ObjectMapper objectMapper;
 
+    private final TokenRepository tokenRepository;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,7 +39,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper, tokenRepository);
     }
 
     @Bean

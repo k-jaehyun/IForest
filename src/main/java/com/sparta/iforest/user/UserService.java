@@ -2,6 +2,8 @@ package com.sparta.iforest.user;
 
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
+import com.sparta.iforest.token.Token;
+import com.sparta.iforest.token.TokenRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final TokenRepository tokenRepository;
 
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
@@ -58,7 +61,12 @@ public class UserService {
         }
 
         // header에 Role이 담긴 JwtToken탑재
-        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername(),user.getRole()));
+        String token = jwtUtil.createToken(requestDto.getUsername(),user.getRole());
+        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+
+        // 토큰을 table에 넣는다
+        Token tokenObject = new Token(token);
+        tokenRepository.save(tokenObject);
 
         // 관리자/일반유저 로그인 메세지 출력
         if (user.getRole()==UserRoleEnum.ADMIN) {
@@ -66,5 +74,10 @@ public class UserService {
         } else {
             return ResponseEntity.status(HttpStatus.OK.value()).body(new CommonResponseDto("로그인 성공",HttpStatus.OK.value()));
         }
+    }
+
+    public void logout(UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+
     }
 }

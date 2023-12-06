@@ -3,6 +3,7 @@ package com.sparta.iforest.Jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.token.TokenRepository;
 import com.sparta.iforest.user.UserDetailsImpl;
 import com.sparta.iforest.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
@@ -29,13 +30,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if(Objects.nonNull(token)) {
+        if(Objects.nonNull(token) && tokenRepository.findByToken(token)) {
             if (jwtUtil.validateToken(token)) {
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 

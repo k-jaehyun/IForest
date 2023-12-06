@@ -33,7 +33,7 @@ public class JwtUtil {
 
     private final String adminToken = "관리자 비밀번호 가시죠";
 
-    public static final String AUTHORIZATION_KEY = "auth";
+    public static final String AUTHORIZATION_KEY = "auth";  // token의 claims에서 role에 대한 key값 ( authority를 "(String) info.get(JwtUtil.AUTHORIZATION_KEY)" 으로 받아올 수 있음)
 
     @PostConstruct
     public void init() {
