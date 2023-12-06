@@ -23,5 +23,5 @@ public class SignupRequestDto {
     @Size(min = 1, max = 30)
     private String introduction;
 
-    private String adminToken;
+    private String adminPW;
 }

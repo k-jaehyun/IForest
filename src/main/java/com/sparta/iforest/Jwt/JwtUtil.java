@@ -5,7 +5,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -32,8 +31,7 @@ public class JwtUtil {
 
     private Key key;
 
-    @Getter
-    private final String adminToken = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final String adminToken = "관리자 비밀번호 가시죠";
 
     public static final String AUTHORIZATION_KEY = "auth";
 
@@ -84,5 +82,9 @@ public class JwtUtil {
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
+    }
+
+    public boolean validateAdminPW(String PW) {
+        return adminToken.equals(PW);
     }
 }

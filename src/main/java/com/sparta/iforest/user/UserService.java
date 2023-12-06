@@ -21,6 +21,7 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
         String introduction = requestDto.getIntroduction();
+        String adminPW = requestDto.getAdminPW();
 
         //회원 중복 확인
         if (userRepository.findByUsername(username).isPresent()) {
@@ -32,8 +33,8 @@ public class UserService {
         }
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.User;
-        if (requestDto.getAdminToken()!=null) {
-            if (!jwtUtil.getAdminToken().equals(requestDto.getAdminToken())) {
+        if (adminPW!=null && !adminPW.isEmpty()) { // 관리자 암호를 보내주지 않거나 빈칸인 경우에는 if문에 들어가지 않습니다
+            if (!jwtUtil.validateAdminPW(adminPW)) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가합니다.");
             }
             role = UserRoleEnum.ADMIN;
