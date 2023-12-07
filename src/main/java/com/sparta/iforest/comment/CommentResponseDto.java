@@ -1,24 +1,21 @@
 package com.sparta.iforest.comment;
+
+import com.sparta.iforest.comment.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class CommentResponseDto {
-    private Long id;
+    private Long commentId;
     private String username;
-    private String text;
-    private String target;
+    private String content;
     private LocalDateTime createdAt;
 
     public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
+        this.commentId = comment.getId();
         this.username = comment.getUser().getUsername();
-        this.text = comment.getText();
+        this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
-
-        if (comment.getParent() != null) {
-            this.target = comment.getParent().getUser().getUsername();
-        }
     }
 }

@@ -1,5 +1,7 @@
 package com.sparta.iforest.comment;
 
+import com.sparta.iforest.post.Post;
+import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.user.User;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
@@ -15,19 +17,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public CommentResponseDto createComment(CommentRequestDto requestDto, User user) {
-        if (requestDto.getPostId() == null) {
-            throw new IllegalIdentifierException("게시글을 선택해주세요.");
-        }
-        Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(() -> new IllegalIdentifierException("선택한 게시글은 존재하지 않습니다."));
+    public CommentResponseDto createComment(Long postId , CommentRequestDto requestDto, User user) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalIdentifierException("선택한 게시글은 존재하지 않습니다."));
         Comment saveComment = commentRepository.save(new Comment(requestDto, user, post));
         return new CommentResponseDto(saveComment);
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, User user) {
         // DB에 존재하는지 확인
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalIdentifierException("선택한 댓글이 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalIdentifierException("선택한 댓글이 존재하지 않습니다."));
         if (!isAccessableUser(user, comment.getUser())) {
             throw new IllegalIdentifierException("작성자만 삭제/수정할 수 있습니다");
         }
@@ -36,9 +35,9 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
-    public ResponseEntity deleteComment(Long id, User user) {
+    public ResponseEntity deleteComment(Long commentId, User user) {
         // DB에 존재하는지 확인
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalIdentifierException("선택한 댓글이 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalIdentifierException("선택한 댓글이 존재하지 않습니다."));
         if (!isAccessableUser(user, comment.getUser())) {
             throw new IllegalIdentifierException("작성자만 삭제/수정할 수 있습니다");
         }
@@ -52,10 +51,10 @@ public class CommentService {
             return false;
         }
 
-        if (access_user.getRole() == UserRoleEnum.ADMIN || access_user.getId().equals(target_user.getId())) {
-            return true;
-        }
+         if (/*access_user.getRole() == UserRoleEnum.ADMIN*/ access_user.getId().equals(target_user.getId())) {
+             return true;
 
+         }
         return false;
     }
 }
