@@ -87,10 +87,14 @@ public class UserService {
     }
 
     public void logout(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
-        String token = bearerToken.substring(7);
-        Token tokenObject = tokenRepository.findByTokenValue(token).orElseThrow(()-> new IllegalArgumentException("해당 토큰이 존재하지 않습니다."));
-        tokenObject.setUser(null);  // Detach 전에 User 객체를 null로 설정
-        tokenRepository.delete(tokenObject);
+        try {
+            String bearerToken = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
+            String token = bearerToken.substring(7);
+            Token tokenObject = tokenRepository.findByTokenValue(token).orElseThrow(() -> new IllegalArgumentException("해당 토큰이 존재하지 않습니다."));
+            tokenObject.setUser(null);  // Detach 전에 User 객체를 null로 설정
+            tokenRepository.delete(tokenObject);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 }
