@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 @RestController
-@RequestMapping ("/api/posts")
+@RequestMapping ("/v1/posts")
 @RequiredArgsConstructor
 public class PostController {
 
