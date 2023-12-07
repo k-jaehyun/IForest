@@ -28,7 +28,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponseDto> postPost(@RequestBody PostRequestDto postrequestDTO, HttpServletRequest httpServletRequest){
         PostResponseDto responseDto = postService.createPost(postrequestDTO, jwtUtil.getUsernameFromHeader(httpServletRequest));
-        return ResponseEntity.status(201).body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(responseDto);
     }
 
     //선택 게시글 조회
@@ -46,8 +46,7 @@ public class PostController {
     //게시물 전체 조회
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPost(){
-        List<PostResponseDto> postResponseDtoList= new ArrayList<>();
-        postResponseDtoList = postService.getAllPost();
+        List<PostResponseDto> postResponseDtoList= postService.getAllPost();
         return ResponseEntity.ok().body(postResponseDtoList);
     }
 

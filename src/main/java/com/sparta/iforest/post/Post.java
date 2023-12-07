@@ -6,9 +6,6 @@ import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -35,9 +32,7 @@ public class Post extends Timestamped {
         this.content = dto.getContent();
     }
 
-//    public void setUser(User user){
-//        this.user = user;
-//    }
+
 
     public void updatePost(PostRequestDto dto){
         this.title = dto.getTitle();
