@@ -37,33 +37,26 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if (Objects.nonNull(token)) {
-            if (tokenRepository.findByTokenValue(token).isPresent()) {
-                if (jwtUtil.validateToken(token)) {
-                    Claims info = jwtUtil.getUserInfoFromToken(token);
+        if(Objects.nonNull(token) && tokenRepository.findByTokenValue(token).isPresent()) {
+            if (jwtUtil.validateToken(token)) {
+                Claims info = jwtUtil.getUserInfoFromToken(token);
 
-                    // 인증정보에 요저정보(username) 넣기
-                    // username -> user 조회
-                    String username = info.getSubject();
-                    SecurityContext context = SecurityContextHolder.createEmptyContext();
-                    // -> userDetails 에 담고
-                    UserDetailsImpl userDetails = userDetailsService.getUserDetailsImpl(username);
-                    // -> authentication의 principal 에 담고
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    // -> securityContent 에 담고
-                    context.setAuthentication(authentication);
-                    // -> SecurityContextHolder 에 담고
-                    SecurityContextHolder.setContext(context);
-                    // -> 이제 @AuthenticationPrincipal 로 조회할 수 있음
-                } else {
-                    // 인증정보가 존재하지 않을때
-                    CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value());
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));
-                }
+                // 인증정보에 요저정보(username) 넣기
+                // username -> user 조회
+                String username = info.getSubject();
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                // -> userDetails 에 담고
+                UserDetailsImpl userDetails = userDetailsService.getUserDetailsImpl(username);
+                // -> authentication의 principal 에 담고
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                // -> securityContent 에 담고
+                context.setAuthentication(authentication);
+                // -> SecurityContextHolder 에 담고
+                SecurityContextHolder.setContext(context);
+                // -> 이제 @AuthenticationPrincipal 로 조회할 수 있음
             } else {
-                CommonResponseDto commonResponseDto = new CommonResponseDto("이미 로그아웃되어 토큰이 저장되어 있지 않습니다.", HttpStatus.BAD_REQUEST.value());
+                // 인증정보가 존재하지 않을때
+                CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value());
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.setContentType("application/json; charset=UTF-8");
                 response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));
