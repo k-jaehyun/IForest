@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +20,8 @@ public class PostService {
 
     //게시글 생성
     public PostResponseDto createPost(PostRequestDto dto, String username){
-        Post post = new Post(dto);
-
         User user = userRepository.findByUsername(username).orElseThrow();
-        post.setUser(user);
+        Post post = new Post(dto,user);
 
         postRepository.save(post);
         return new PostResponseDto(post);
@@ -73,8 +70,12 @@ public class PostService {
         //로그인한 사용자와 게시글 작성자 검증
         Post post = checkLoginUserAndPostUser(postId, username);
         //수정
-        post.setTitle(dto.getTitle());
-        post.setContent(dto.getContent());
+//        post.setTitle(dto.getTitle());
+//        post.setContent(dto.getContent());
+
+
+        post.updatePost(dto);
+
         postRepository.save(post);
         return new PostResponseDto(post);
 
