@@ -29,13 +29,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final ObjectMapper objectMapper;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if(Objects.nonNull(token)) {
+        if(Objects.nonNull(token) && tokenRepository.findByTokenValue(token).isPresent()) {
             if (jwtUtil.validateToken(token)) {
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 
