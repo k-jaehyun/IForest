@@ -9,16 +9,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
 @Component
 public class JwtUtil {
+
+    private final TokenRepository tokenRepository;
+    public JwtUtil(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     // Header KEY 값
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -114,6 +122,14 @@ public class JwtUtil {
         tokenValue = substringToken(tokenValue);
         Claims info = getUserInfoFromToken(tokenValue);
         return info.getSubject();
+    }
+
+    // 발행된 토큰을 테이블에서 만료
+    @Transactional
+    @Scheduled(fixedRate = 60 * 1000)  // 1분에 한번 작동
+    public void cleanupExpireTokens() {
+        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        tokenRepository.deleteByCreatedTimeBefore(oneHourAgo);  // 1시간 이전 발행된 모든 토큰 삭제
     }
 
 

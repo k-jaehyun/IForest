@@ -1,4 +1,4 @@
-package com.sparta.iforest.token;
+package com.sparta.iforest.Jwt;
 
 import com.sparta.iforest.user.User;
 import jakarta.persistence.*;

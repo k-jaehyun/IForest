@@ -1,5 +1,6 @@
-package com.sparta.iforest.token;
+package com.sparta.iforest.Jwt;
 
+import com.sparta.iforest.Jwt.Token;
 import com.sparta.iforest.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

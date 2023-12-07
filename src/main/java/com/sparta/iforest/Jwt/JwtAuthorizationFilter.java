@@ -3,7 +3,6 @@ package com.sparta.iforest.Jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.CommonResponseDto;
-import com.sparta.iforest.token.TokenRepository;
 import com.sparta.iforest.user.UserDetailsImpl;
 import com.sparta.iforest.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
@@ -18,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;

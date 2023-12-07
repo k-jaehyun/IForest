@@ -2,8 +2,8 @@ package com.sparta.iforest.user;
 
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
-import com.sparta.iforest.token.Token;
-import com.sparta.iforest.token.TokenRepository;
+import com.sparta.iforest.Jwt.Token;
+import com.sparta.iforest.Jwt.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
