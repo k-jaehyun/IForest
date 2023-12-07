@@ -21,8 +21,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class PostController {
 
     private final PostService postService;
-    private final JwtUtil jwtUtil;
-    //private final CommonResponseDto commonResponseDto;
+    //private final JwtUtil jwtUtil;
 
 
     //게시글 생성

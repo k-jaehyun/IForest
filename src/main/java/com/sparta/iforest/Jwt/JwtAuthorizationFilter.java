@@ -4,7 +4,7 @@ package com.sparta.iforest.Jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.user.UserDetailsImpl;
-import com.sparta.iforest.user.UserDetailsService;
+import com.sparta.iforest.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +27,7 @@ import java.util.Objects;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String username = info.getSubject();
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 // -> userDetails 에 담고
-                UserDetailsImpl userDetails = userDetailsService.getUserDetailsImpl(username);
+                UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsServiceImpl.loadUserByUsername(username);
                 // -> authentication의 principal 에 담고
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 // -> securityContent 에 담고
@@ -54,6 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 // -> 이제 @AuthenticationPrincipal 로 조회할 수 있음
             } else {
                 // 인증정보가 존재하지 않을때
+                System.out.println("JwtAuthorizationFilter.doFilterInternal");
                 CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value());
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.setContentType("application/json; charset=UTF-8");

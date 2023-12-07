@@ -3,13 +3,11 @@ package com.sparta.iforest.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.Jwt.JwtAuthorizationFilter;
 import com.sparta.iforest.Jwt.JwtUtil;
-import com.sparta.iforest.user.UserDetailsService;
+import com.sparta.iforest.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,7 +25,7 @@ public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     private final ObjectMapper objectMapper;
 
@@ -38,7 +36,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsServiceImpl, objectMapper);
     }
 
     @Bean
@@ -61,10 +59,10 @@ public class WebSecurityConfig {
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.exceptionHandling(config -> {
-            config.authenticationEntryPoint(errorPoint());
-            config.accessDeniedHandler(accessDeniedHandler());
-        });
+//        http.exceptionHandling(config -> {
+//            config.authenticationEntryPoint(errorPoint());
+//            config.accessDeniedHandler(accessDeniedHandler());
+//        });
 
         return http.build();
     }
