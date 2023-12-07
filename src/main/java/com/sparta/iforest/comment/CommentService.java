@@ -3,6 +3,7 @@ package com.sparta.iforest.comment;
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.user.User;
+import com.sparta.iforest.user.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class CommentService {
             return false;
         }
 
-         if (/*access_user.getRole() == UserRoleEnum.ADMIN*/ access_user.getId().equals(target_user.getId())) {
+         if (target_user.getRole() == UserRoleEnum.ADMIN || access_user.getId().equals(target_user.getId())) {
              return true;
 
          }
