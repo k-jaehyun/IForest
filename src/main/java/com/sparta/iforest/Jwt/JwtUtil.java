@@ -48,6 +48,8 @@ public class JwtUtil {
         return null;
     }
 
+
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -83,25 +85,11 @@ public class JwtUtil {
     }
 
 
-    // header 에서 JWT 가져오기
-    public String getJwtFromHeader(HttpServletRequest request) {
-        return request.getHeader(AUTHORIZATION_HEADER);
-    }
-
-    // JWT SubString
-    public String substringToken(String tokenValue) {
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            return tokenValue.substring(7);
-        }
-        logger.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
-    }
-
 
     // 헤더에서 사용자 이름 가져오기
     public String getUsernameFromHeader(HttpServletRequest request) {
-        String tokenValue = getJwtFromHeader(request);
-        tokenValue = substringToken(tokenValue);
+        //String tokenValue = getJwtFromHeader(request);
+        String tokenValue = resolveToken(request);
         Claims info = getUserInfoFromToken(tokenValue);
         return info.getSubject();
     }
