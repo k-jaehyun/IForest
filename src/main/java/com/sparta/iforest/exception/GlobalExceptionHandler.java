@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 new FieldErrorResponseDto(
                         ex.getMessage(),
-                        ex.getStatusCode(),
+                        ex.getStatus(),
                         ex.getFieldErrorDtoList()
                 ));
     }

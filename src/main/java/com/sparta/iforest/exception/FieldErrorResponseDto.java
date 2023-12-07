@@ -10,8 +10,8 @@ public class FieldErrorResponseDto extends CommonResponseDto {
     private List<FieldErrorDto> fieldError;
 
 
-    public FieldErrorResponseDto(String msg, int statusCode, List<FieldErrorDto> fieldErrorDtoList) {
-        super(msg,statusCode);
+    public FieldErrorResponseDto(String msg, int status, List<FieldErrorDto> fieldErrorDtoList) {
+        super(msg,status);
         this.fieldError=fieldErrorDtoList;
     }
 }
