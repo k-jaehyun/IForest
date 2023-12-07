@@ -9,14 +9,14 @@ public class ProfileResponseDto {
 
     private String email;
 
-    private String user_name;
+    private String username;
 
     private String introduction;
 
     public ProfileResponseDto(User userId) {
         this.id = userId.getId();
         this.email = userId.getEmail();
-        this.user_name = userId.getUsername();
+        this.username = userId.getUsername();
         this.introduction = userId.getIntroduction();
     }
 

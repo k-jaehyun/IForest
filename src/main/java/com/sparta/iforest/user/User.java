@@ -37,4 +37,10 @@ public class User {
         this.email = email;
         this.introduction = introduction;
     }
+
+    public void profileUpdate(ProfileRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.introduction = requestDto.getIntroduction();
+    }
 }

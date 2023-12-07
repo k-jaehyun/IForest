@@ -1,9 +1,15 @@
 package com.sparta.iforest.user;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +45,43 @@ public class UserService {
         }
     }
 
-    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+    @Transactional (readOnly = true)
+    public ProfileResponseDto getProfileUpdatePage(User user) {
+
+        return new ProfileResponseDto(user);
     }
+    @Transactional
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+
+        HashMap<String, String> map = requestDto.fieldChangeCheck(user);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            switch (entry.getKey()) {
+
+                case "username" -> nameCheck(entry.getValue());
+                case "email" -> emailCheck(entry.getValue());
+            }
+        }
+
+        user.profileUpdate(requestDto);
+
+        userRepository.save(user);
+
+        return new ProfileResponseDto(user);
+    }
+
+    private void nameCheck(String username) {
+        Optional<User> checkUsername = userRepository.findByUsername(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 이름 입니다.");
+        }
+    }
+
+    private void emailCheck(String email) {
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new IllegalArgumentException("중복된 이메일 입니다.");
+        }
+    }
+
+
 }

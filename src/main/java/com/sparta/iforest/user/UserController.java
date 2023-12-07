@@ -40,8 +40,8 @@ public class UserController {
         res.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(requestDto.getUsername()));
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto("로그인 성공",HttpStatus.OK.value()));
     }
-    @ResponseBody
-    @PutMapping("/profile")
+
+    @PatchMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody @Valid ProfileRequestDto requestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                            BindingResult bindingResult) {
