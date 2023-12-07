@@ -1,7 +1,6 @@
 package com.sparta.iforest.post;
 
 import com.sparta.iforest.CommonResponseDto;
-import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class PostController {
 
     private final PostService postService;
-    //private final JwtUtil jwtUtil;
+
 
 
     //게시글 생성
