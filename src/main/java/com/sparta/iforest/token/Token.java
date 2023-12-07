@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="token")
 @Getter
@@ -21,9 +23,12 @@ public class Token {
     @OneToOne
     private User user;
 
+    private LocalDateTime createdTime;
+
     public Token(String token, User user) {
         this.tokenValue=token;
         this.user=user;
+        this.createdTime=LocalDateTime.now();
     }
 
     public void setUser(User user) {
