@@ -2,11 +2,12 @@ package com.sparta.iforest.post;
 
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
+import com.sparta.iforest.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,8 +27,8 @@ public class PostController {
 
     //게시글 생성
     @PostMapping
-    public ResponseEntity<PostResponseDto> postPost(@RequestBody PostRequestDto postrequestDTO, HttpServletRequest httpServletRequest){
-        PostResponseDto responseDto = postService.createPost(postrequestDTO, jwtUtil.getUsernameFromHeader(httpServletRequest));
+    public ResponseEntity<PostResponseDto> postPost(@RequestBody PostRequestDto postrequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        PostResponseDto responseDto = postService.createPost(postrequestDTO, userDetails.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(responseDto);
     }
 
@@ -63,9 +64,9 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> updatePost(@PathVariable Long postId,
                                                         @RequestBody PostRequestDto postRequestDto,
-                                                        HttpServletRequest httpServletRequest){
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
         try {
-            PostResponseDto responseDto = postService.updatePost(postId,postRequestDto,jwtUtil.getUsernameFromHeader(httpServletRequest));
+            PostResponseDto responseDto = postService.updatePost(postId,postRequestDto,userDetails.getUsername());
             return ResponseEntity.ok().body(responseDto);
         }catch (IllegalArgumentException |  RejectedExecutionException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
@@ -75,9 +76,9 @@ public class PostController {
 
     //게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long postId, HttpServletRequest httpServletRequest){
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long postId,  @AuthenticationPrincipal UserDetailsImpl userDetails){
         try{
-            postService.deletePost(postId, jwtUtil.getUsernameFromHeader(httpServletRequest));
+            postService.deletePost(postId, userDetails.getUsername());
             return redirectToGetAllPost();
         }catch (IllegalArgumentException | RejectedExecutionException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
