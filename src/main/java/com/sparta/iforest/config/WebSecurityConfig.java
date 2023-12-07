@@ -3,13 +3,12 @@ package com.sparta.iforest.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.iforest.Jwt.JwtAuthorizationFilter;
 import com.sparta.iforest.Jwt.JwtUtil;
+import com.sparta.iforest.Jwt.TokenRepository;
 import com.sparta.iforest.user.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,6 +30,8 @@ public class WebSecurityConfig {
 
     private final ObjectMapper objectMapper;
 
+    private final TokenRepository tokenRepository;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,7 +39,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper, tokenRepository);
     }
 
     @Bean
@@ -54,13 +55,16 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/api/users/**").permitAll() // '/api/users/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/v1/users/signup").permitAll()
+                        .requestMatchers("/v1/users/login").permitAll()
+                        .requestMatchers("/v1/users/logout").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        // 접근불가 페이지 생성시 활용
         http.exceptionHandling(config -> {
             config.authenticationEntryPoint(errorPoint());
             config.accessDeniedHandler(accessDeniedHandler());
