@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -56,6 +58,10 @@ public class AdminService {
 
     }
 
+
+    public List<UserResponseDto> getUserList() {
+        return userRepository.findAll().stream().map(UserResponseDto::new).toList();
+    }
 
 
 }
