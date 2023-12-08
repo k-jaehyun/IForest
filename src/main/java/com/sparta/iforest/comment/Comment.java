@@ -1,6 +1,7 @@
 package com.sparta.iforest.comment;
 
 import com.sparta.iforest.Timestamped;
+import com.sparta.iforest.comment.dto.CommentRequestDto;
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.user.User;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.sparta.iforest.comment;
+package com.sparta.iforest.comment.dto;
 
 import com.sparta.iforest.comment.Comment;
 import lombok.AllArgsConstructor;

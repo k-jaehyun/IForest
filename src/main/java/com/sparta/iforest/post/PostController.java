@@ -1,6 +1,9 @@
 package com.sparta.iforest.post;
 
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.post.dto.PostCommentResponseDTO;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 

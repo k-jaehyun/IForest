@@ -1,4 +1,4 @@
-package com.sparta.iforest.exception;
+package com.sparta.iforest.exception.dto;
 
 import com.sparta.iforest.CommonResponseDto;
 import lombok.Getter;

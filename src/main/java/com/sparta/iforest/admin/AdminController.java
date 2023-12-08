@@ -2,14 +2,16 @@ package com.sparta.iforest.admin;
 
 
 import com.sparta.iforest.CommonResponseDto;
-import com.sparta.iforest.post.PostRequestDto;
-import com.sparta.iforest.post.PostResponseDto;
-import com.sparta.iforest.post.PostService;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.UserDetailsImpl;
+import com.sparta.iforest.user.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,16 @@ public class AdminController {
         }
     }
 
+    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
+    @GetMapping("/secured")
+    public String getProductsByAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
+        for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            System.out.println("authority.getAuthority() = " + authority.getAuthority());
+        }
+
+        return "redirect:/";
+    }
 
 
 

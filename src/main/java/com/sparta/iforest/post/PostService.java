@@ -1,7 +1,8 @@
 package com.sparta.iforest.post;
 
-import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
+import com.sparta.iforest.post.dto.PostCommentResponseDTO;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.User;
 import com.sparta.iforest.user.UserRepository;
 import lombok.RequiredArgsConstructor;

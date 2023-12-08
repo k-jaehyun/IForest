@@ -1,4 +1,4 @@
-package com.sparta.iforest.exception;
+package com.sparta.iforest.exception.dto;
 
 import lombok.Getter;
 import org.springframework.validation.FieldError;

@@ -1,8 +1,9 @@
-package com.sparta.iforest.post;
+package com.sparta.iforest.post.dto;
 
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
+import com.sparta.iforest.comment.dto.CommentResponseDto;
+import com.sparta.iforest.post.Post;
 import lombok.Getter;
 import lombok.Setter;
 

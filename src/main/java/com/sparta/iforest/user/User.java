@@ -1,5 +1,6 @@
 package com.sparta.iforest.user;
 
+import com.sparta.iforest.user.dto.ProfileRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

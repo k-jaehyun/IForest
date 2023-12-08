@@ -2,8 +2,8 @@ package com.sparta.iforest.admin;
 
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.post.PostRepository;
-import com.sparta.iforest.post.PostRequestDto;
-import com.sparta.iforest.post.PostResponseDto;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.User;
 import com.sparta.iforest.user.UserRepository;
 import com.sparta.iforest.user.UserRoleEnum;
