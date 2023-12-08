@@ -3,14 +3,9 @@ package com.sparta.iforest.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Setter
 @Getter
 @NoArgsConstructor
 public class User {
@@ -31,16 +26,24 @@ public class User {
     @Column
     private String introduction;
 
-    public User(String username, String password, String email, String introduction) {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING) // Enum Type을 DB 컬럼에 저장할 때 사용하는 애너테이션 // EnumType.STRING : Enum의 이름을 DB에 그대로 저장
+    private UserRoleEnum role;
+
+    public User(String username, String password, String email, String introduction, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.introduction = introduction;
+        this.role = role;
     }
 
     public void profileUpdate(ProfileRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.introduction = requestDto.getIntroduction();
+    }
+    public void passwordUpdate(String password) {
+        this.password = password;
     }
 }

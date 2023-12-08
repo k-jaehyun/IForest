@@ -3,8 +3,10 @@ package com.sparta.iforest.user;
 import com.sparta.iforest.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
@@ -16,9 +18,16 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
-    @Override
+    @Override  // Controller에서 @Secured(UserRoleEnum.Authority.ADMIN) 를 달아서 관리자용 api 추가 가능
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        UserRoleEnum role = user.getRole();
+        String authority = role.getAuthority();
+
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(simpleGrantedAuthority);
+
+        return authorities;
     }
 
     @Override
