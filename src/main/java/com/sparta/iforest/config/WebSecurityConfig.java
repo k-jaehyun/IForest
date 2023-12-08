@@ -1,14 +1,18 @@
 package com.sparta.iforest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtAuthorizationFilter;
 import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.Jwt.TokenRepository;
 import com.sparta.iforest.user.UserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -65,7 +70,7 @@ public class WebSecurityConfig {
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // 접근불가 페이지 생성시 활용
+        // 토큰 인증 오류 처리
         http.exceptionHandling(config -> {
             config.authenticationEntryPoint(errorPoint());
             config.accessDeniedHandler(accessDeniedHandler());
@@ -76,13 +81,20 @@ public class WebSecurityConfig {
 
     private AccessDeniedHandler accessDeniedHandler() {
         return (request, response, ex) -> {
-            response.setStatus(400);
+            CommonResponseDto commonResponseDto = new CommonResponseDto(ex.getMessage(), HttpStatus.FORBIDDEN.value());
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));
         };
     }
 
     private AuthenticationEntryPoint errorPoint() {
         return (request, response, authException) -> {
             authException.printStackTrace();
+            CommonResponseDto commonResponseDto = new CommonResponseDto("유효한 토큰이 아닙니다.", HttpStatus.BAD_REQUEST.value());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));
         };
     }
 }
