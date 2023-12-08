@@ -9,11 +9,11 @@ import lombok.Setter;
 public class SignupRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "^[a-z0-9]{4,10}$")
+    @Pattern(regexp = "^[a-z0-9]{4,10}$", message = "4~10자리의 소문자 또는 숫자만 등록 가능합니다..")
     private String username;
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\[\\]{}|;:'\",.]{8,15}$")
+    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()-_+=<>?/\\[\\]{}|;:'\",.]{8,15}$", message = "8~15자리의 영문,숫자,특수문자만 등록 가능합니다.")
     private String password;
 
     @NotBlank
