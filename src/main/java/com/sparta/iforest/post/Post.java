@@ -8,6 +8,8 @@ import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class Post extends Timestamped {
 
     @ManyToOne
     @JoinColumn (name = "user_name")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
     @OneToMany (mappedBy = "post", orphanRemoval = true)

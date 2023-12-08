@@ -13,4 +13,6 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     Optional<Token> findByUser(User user);
 
     void deleteByCreatedTimeBefore(LocalDateTime oneHourAgo);
+
+    Optional<Token> findByUser_Id(Long userId);
 }

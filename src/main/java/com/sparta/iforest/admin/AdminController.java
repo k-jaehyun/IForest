@@ -93,6 +93,13 @@ public class AdminController {
         return adminService.changeUserRole(userId);
     }
 
+    // 해당 유저 삭제
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<CommonResponseDto> deleteUser(@PathVariable Long userId) {
+        return adminService.deleteUser(userId);
+    }
+
 
 
 }
