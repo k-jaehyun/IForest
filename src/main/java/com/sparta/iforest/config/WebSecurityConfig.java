@@ -7,6 +7,7 @@ import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.Jwt.TokenRepository;
 import com.sparta.iforest.user.UserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
+import com.sparta.iforest.user.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -60,10 +61,11 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/v1/users/signup").permitAll()
+                        .requestMatchers("/v1/users/signup").permitAll() //모든 권한 허용
                         .requestMatchers("/v1/users/login").permitAll()
                         .requestMatchers("/v1/users/logout").permitAll()
                         .requestMatchers("/v1/users/kakao/callback/**").permitAll()
+                        .requestMatchers("/v1/admin/post").hasRole(UserRoleEnum.ADMIN.toString())
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 

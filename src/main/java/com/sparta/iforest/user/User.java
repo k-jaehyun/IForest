@@ -52,4 +52,13 @@ public class User {
         this.kakaoId = kakaoId;
         return this;
     }
+
+    public void profileUpdate(ProfileRequestDto requestDto) {
+        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.introduction = requestDto.getIntroduction();
+    }
+    public void passwordUpdate(String password) {
+        this.password = password;
+    }
 }

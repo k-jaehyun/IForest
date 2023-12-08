@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.exception.FieldErrorDto;
 import com.sparta.iforest.exception.FieldErrorException;
+import com.sparta.iforest.exception.PasswordException;
 import com.sparta.iforest.user.kakao.KakaoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,6 +51,33 @@ public class UserController {
     public ResponseEntity<CommonResponseDto> logout(HttpServletRequest request) {
         userService.logout(request);
         return ResponseEntity.status(HttpStatus.OK.value()).body(new CommonResponseDto("로그아웃 성공",HttpStatus.OK.value()));
+    }
+
+    @PutMapping("/(userId)/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody @Valid ProfileRequestDto requestDto,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
+        }
+
+        ProfileResponseDto profileResponseDto = userService.updateProfile(requestDto, userDetails.getUser());
+
+        return ResponseEntity.ok(profileResponseDto);
+    }
+
+    @PatchMapping("/(userId)/password")
+    public ResponseEntity<?> updatePassword(@RequestBody @Valid PasswordRequestDto requestDto,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                            BindingResult bindingResult) throws PasswordException {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
+        }
+
+        userService.updatePassword(requestDto, userDetails.getUser());
+
+        return ResponseEntity.ok("비밀번호 변경 완료");
     }
 
     // https://kauth.kakao.com/oauth/authorize?response_type=code&client_id= ${REST_API_KEY} &redirect_uri= ${REDIRECT_URI}

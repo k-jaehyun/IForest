@@ -4,13 +4,20 @@ import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.Jwt.JwtUtil;
 import com.sparta.iforest.Jwt.Token;
 import com.sparta.iforest.Jwt.TokenRepository;
+import com.sparta.iforest.exception.PasswordException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -97,4 +104,62 @@ public class UserService {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+
+    @Transactional (readOnly = true)
+    public ProfileResponseDto getProfileUpdatePage(User user) {
+
+        return new ProfileResponseDto(user);
+    }
+    @Transactional
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+
+        HashMap<String, String> map = requestDto.fieldChangeCheck(user);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            switch (entry.getKey()) {
+
+                case "username" -> nameCheck(entry.getValue());
+                case "email" -> emailCheck(entry.getValue());
+            }
+        }
+
+        user.profileUpdate(requestDto);
+
+        userRepository.save(user);
+
+        return new ProfileResponseDto(user);
+    }
+
+    public void updatePassword(PasswordRequestDto requestDto, User user) throws PasswordException {
+
+        String password = passwordEncoder.encode(requestDto.getNewPassword());
+
+        if (!(passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword()))) {
+            throw new PasswordException(HttpStatus.FORBIDDEN, "비밀번호가 일치하지 않습니다");
+        }
+
+        else if (!(requestDto.getNewPassword().equals(requestDto.getPasswordCheck()))) {
+            throw new PasswordException(HttpStatus.BAD_REQUEST, "비밀번호 확인이 일치하지 않습니다");
+        }
+
+        user.passwordUpdate(password);
+
+        userRepository.save(user);
+
+    }
+
+    private void nameCheck(String username) {
+        Optional<User> checkUsername = userRepository.findByUsername(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 이름 입니다");
+        }
+    }
+
+    private void emailCheck(String email) {
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new IllegalArgumentException("중복된 이메일 입니다");
+        }
+    }
+
+
 }
