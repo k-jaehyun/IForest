@@ -1,4 +1,4 @@
-package com.sparta.iforest.aop;
+package com.sparta.iforest.post.aop;
 
 import com.sparta.iforest.post.PostService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class ApiAccessCounter {
+public class PostViewCounter {
 
     private final PostService postService;
 
