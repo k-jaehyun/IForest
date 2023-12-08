@@ -18,6 +18,7 @@ public class PostCommentResponseDTO extends CommonResponseDto {
     private String title;
     private String content;
     private String user;
+    private Long accessCount;
     private List<CommentResponseDto> commentResponseDtoListList;
 
     public PostCommentResponseDTO(Post post) {
@@ -26,6 +27,7 @@ public class PostCommentResponseDTO extends CommonResponseDto {
         this.content = post.getContent();
         this.user = post.getUser().getUsername();
         this.commentResponseDtoListList = commentListToDtoList(post);
+        this.accessCount = post.getViewCount();
     }
 
 

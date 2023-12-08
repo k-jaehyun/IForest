@@ -41,6 +41,9 @@ public class Post extends Timestamped {
 
     private String adminUser;
 
+    @Column
+    private Long viewCount = 0L;
+
     public Post(PostRequestDto dto, User user){
         this.user = user;
         this.title = dto.getTitle();
@@ -61,4 +64,7 @@ public class Post extends Timestamped {
         this.adminUser = user;
     }
 
+    public void setViewCount(long l) {
+        this.viewCount=l;
+    }
 }
