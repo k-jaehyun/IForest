@@ -1,7 +1,6 @@
 package com.sparta.iforest.post;
 
 import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentRepository;
 import com.sparta.iforest.comment.CommentResponseDto;
 import com.sparta.iforest.user.User;
 import com.sparta.iforest.user.UserRepository;
@@ -104,19 +103,5 @@ public class PostService {
         return post;
     }
 
-
-    //post에 달린 commentList를 commentResponseDtoList로
-    public List<CommentResponseDto> commentListToDtoList(Post post) {
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        List<Comment> commentList = new ArrayList<>();
-        //코멘트 리스트 반환
-        commentList = post.getCommentList();
-        //코멘트 리스트를 commentDto리스트로 바꾸기
-        commentList.forEach(comment -> {
-            var commentDto = new CommentResponseDto(comment);
-            commentResponseDtoList.add(commentDto);
-        });
-        return commentResponseDtoList;
-    }
 }
 
