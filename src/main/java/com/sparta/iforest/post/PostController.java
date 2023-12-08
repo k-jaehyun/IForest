@@ -33,27 +33,34 @@ public class PostController {
     //선택 게시글 조회
     @GetMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> getPost(@PathVariable Long postId){
-       try {
-           PostResponseDto responseDto = postService.getPost(postId);
-           return ResponseEntity.ok().body(responseDto);
+//       try {
+//           PostResponseDto responseDto = postService.getPost(postId);
+//
+//           return ResponseEntity.ok().body(responseDto);
+//
+//       } catch (IllegalArgumentException e){
+//           return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+//       }
 
-       } catch (IllegalArgumentException e){
+        try {
+            PostCommentResponseDTO postCommentResponseDTO = postService.getPost(postId);
+            return ResponseEntity.ok().body(postCommentResponseDTO);
+        }catch (IllegalArgumentException e){
            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
        }
     }
 
     //게시물 전체 조회
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getAllPost(){
-        List<PostResponseDto> postResponseDtoList= postService.getAllPost();
-        return ResponseEntity.ok().body(postResponseDtoList);
+    public ResponseEntity<List<PostCommentResponseDTO>> getAllPost(){
+        List<PostCommentResponseDTO> postCommentResponseDTOList= postService.getAllPost();
+        return ResponseEntity.ok().body(postCommentResponseDTOList);
     }
 
     //작성자별 게시물 조회
     @GetMapping("/request-param")
     public ResponseEntity<List<PostResponseDto>> getPostByUser(@RequestParam ("user") String username){
-        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        postResponseDtoList = postService.getPostByUser(username);
+        List<PostResponseDto> postResponseDtoList = postService.getPostByUser(username);
         return ResponseEntity.ok().body(postResponseDtoList);
         //캐치 해야함
     }
