@@ -11,6 +11,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +58,17 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public ResponseEntity<CommonResponseDto> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         return kakaoService.kakaoLogin(code, response);
+    }
+
+    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
+    @GetMapping("/secured")
+    public String getProductsByAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
+        for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            System.out.println("authority.getAuthority() = " + authority.getAuthority());
+        }
+
+        return "redirect:/";
     }
 
 
