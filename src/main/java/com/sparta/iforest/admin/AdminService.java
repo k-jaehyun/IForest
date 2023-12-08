@@ -1,6 +1,10 @@
 package com.sparta.iforest.admin;
 
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.comment.Comment;
+import com.sparta.iforest.comment.CommentRepository;
+import com.sparta.iforest.comment.dto.CommentRequestDto;
+import com.sparta.iforest.comment.dto.CommentResponseDto;
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.post.dto.PostRequestDto;
@@ -22,6 +26,7 @@ public class AdminService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
 
 
@@ -59,6 +64,17 @@ public class AdminService {
         }
 
 
+    }
+
+    @Transactional
+    public CommentResponseDto updateComment(Long postId, Long commentId, CommentRequestDto requestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        if (comment.getPost()!=post) {
+            throw new IllegalArgumentException("해당 게시글에 존재하지 않는 댓글입니다.");
+        }
+        comment.update(requestDto);
+        return new CommentResponseDto(comment);
     }
 
 

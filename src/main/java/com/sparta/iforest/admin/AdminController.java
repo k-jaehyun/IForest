@@ -2,6 +2,8 @@ package com.sparta.iforest.admin;
 
 
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.comment.dto.CommentRequestDto;
+import com.sparta.iforest.comment.dto.CommentResponseDto;
 import com.sparta.iforest.post.dto.PostRequestDto;
 import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.UserDetailsImpl;
@@ -52,6 +54,13 @@ public class AdminController {
         } catch (IllegalArgumentException | RejectedExecutionException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
+    }
+
+    // 댓글 수정
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public CommentResponseDto updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
+        return adminService.updateComment(postId, commentId, requestDto);
     }
 
     // 유저 전체 목록 조회
