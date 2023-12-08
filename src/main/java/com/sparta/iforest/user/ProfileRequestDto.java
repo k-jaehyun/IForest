@@ -28,8 +28,6 @@ public class ProfileRequestDto {
             map.put("email", this.email);
         } else if (!(this.username.equals(user.getUsername()))) {
             map.put("username", this.username);
-        } else if (!(this.introduction.equals(user.getUsername()))) {
-            map.put("introduction", this.introduction);
         }
         return map;
     }

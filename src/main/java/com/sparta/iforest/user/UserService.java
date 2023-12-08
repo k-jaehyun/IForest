@@ -134,11 +134,11 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getNewPassword());
 
         if (!(passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword()))) {
-            throw new PasswordException(HttpStatus.FORBIDDEN, "현재 비밀번호가 일치하지 않습니다");
+            throw new PasswordException(HttpStatus.FORBIDDEN, "비밀번호가 일치하지 않습니다");
         }
 
         else if (!(requestDto.getNewPassword().equals(requestDto.getPasswordCheck()))) {
-            throw new PasswordException(HttpStatus.BAD_REQUEST, "변경할 비밀번호랑 비밀번호 확인이랑 다릅니다.");
+            throw new PasswordException(HttpStatus.BAD_REQUEST, "비밀번호 확인이 일치하지 않습니다");
         }
 
         user.passwordUpdate(password);
@@ -150,14 +150,14 @@ public class UserService {
     private void nameCheck(String username) {
         Optional<User> checkUsername = userRepository.findByUsername(username);
         if (checkUsername.isPresent()) {
-            throw new IllegalArgumentException("중복된 이름 입니다.");
+            throw new IllegalArgumentException("중복된 이름 입니다");
         }
     }
 
     private void emailCheck(String email) {
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
-            throw new IllegalArgumentException("중복된 이메일 입니다.");
+            throw new IllegalArgumentException("중복된 이메일 입니다");
         }
     }
 

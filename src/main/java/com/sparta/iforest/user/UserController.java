@@ -50,7 +50,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK.value()).body(new CommonResponseDto("로그아웃 성공",HttpStatus.OK.value()));
     }
 
-    @PutMapping("/profile")
+    @PutMapping("/(userId)/profile")
     public ResponseEntity<?> updateProfile(@RequestBody @Valid ProfileRequestDto requestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                            BindingResult bindingResult) {
@@ -64,10 +64,10 @@ public class UserController {
     }
 
     @ResponseBody
-    @PutMapping("/profile/password")
+    @PutMapping("/(userId)/password")
     public ResponseEntity<?> updatePassword(@RequestBody @Valid PasswordRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            BindingResult bindingResult) throws FieldErrorException, PasswordException {
+                                            BindingResult bindingResult) throws PasswordException {
 
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors());
