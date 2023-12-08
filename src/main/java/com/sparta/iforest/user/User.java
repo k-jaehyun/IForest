@@ -62,4 +62,8 @@ public class User {
     public void passwordUpdate(String password) {
         this.password = password;
     }
+
+    public void updateRole(UserRoleEnum userRoleEnum) {
+        this.role=userRoleEnum;
+    }
 }

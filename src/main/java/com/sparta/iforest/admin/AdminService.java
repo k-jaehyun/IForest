@@ -1,5 +1,6 @@
 package com.sparta.iforest.admin;
 
+import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.post.dto.PostRequestDto;
@@ -8,6 +9,8 @@ import com.sparta.iforest.user.User;
 import com.sparta.iforest.user.UserRepository;
 import com.sparta.iforest.user.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +66,16 @@ public class AdminService {
         return userRepository.findAll().stream().map(UserResponseDto::new).toList();
     }
 
+    @Transactional
+    public ResponseEntity<CommonResponseDto> changeUserRole(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 user_id 입니다."));
 
+        if (user.getRole().equals(UserRoleEnum.ADMIN)) {
+            user.updateRole(UserRoleEnum.User);
+        } else {
+            user.updateRole(UserRoleEnum.ADMIN);
+        }
+
+        return ResponseEntity.ok().body(new CommonResponseDto(user.getRole().getAuthority()+"로 변경되었습니다.",HttpStatus.OK.value()));
+    }
 }

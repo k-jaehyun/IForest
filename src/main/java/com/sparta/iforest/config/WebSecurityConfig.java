@@ -93,7 +93,7 @@ public class WebSecurityConfig {
     private AuthenticationEntryPoint errorPoint() {
         return (request, response, authException) -> {
             authException.printStackTrace();
-            CommonResponseDto commonResponseDto = new CommonResponseDto("유효한 토큰이 아닙니다.", HttpStatus.BAD_REQUEST.value());
+            CommonResponseDto commonResponseDto = new CommonResponseDto("유효한 토큰이 아닙니다. 혹은 URL을 다시 확인하세요.", HttpStatus.BAD_REQUEST.value());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json; charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));

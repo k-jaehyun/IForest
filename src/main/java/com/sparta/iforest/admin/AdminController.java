@@ -54,12 +54,19 @@ public class AdminController {
         }
     }
 
-    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
+    // 유저 전체 목록 조회
+    @Secured(UserRoleEnum.Authority.ADMIN)
     @GetMapping("/users")
     public List<UserResponseDto> getUserList() {
         return adminService.getUserList();
     }
 
+    // 유저 Role 변경
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @GetMapping("/users/{userId}/role")
+    public ResponseEntity<CommonResponseDto> changeUserRole(@PathVariable Long userId) {
+        return adminService.changeUserRole(userId);
+    }
 
 
 
