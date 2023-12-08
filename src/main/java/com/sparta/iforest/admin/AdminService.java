@@ -27,14 +27,14 @@ public class AdminService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
         UserRoleEnum userRole = user.getRole();
 
-        if (userRole == UserRoleEnum.ADMIN){
-            //수정
+//        if (userRole == UserRoleEnum.ADMIN){
+//            //수정
             post.adminUpdatePost(dto, user.getUsername());
             postRepository.save(post);
             return new PostResponseDto(post);
-        } else {
-            throw new IllegalArgumentException ("관리자만 수정 할 수 있습니다. ");
-        }
+//        } else {
+//            throw new IllegalArgumentException ("관리자만 수정 할 수 있습니다. ");
+//        }
 
     }
 

@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.concurrent.RejectedExecutionException;
 
 @RestController
-@RequestMapping("/v1/posts/admin")
+@RequestMapping("/v1/admin/post")
 @RequiredArgsConstructor
 public class AdminController {
 
