@@ -77,6 +77,15 @@ public class AdminService {
         return new CommentResponseDto(comment);
     }
 
+    public void deleteComment(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        if (comment.getPost()!=post) {
+            throw new IllegalArgumentException("해당 게시글에 존재하지 않는 댓글입니다.");
+        }
+        commentRepository.delete(comment);
+    }
+
 
     public List<UserResponseDto> getUserList() {
         return userRepository.findAll().stream().map(UserResponseDto::new).toList();

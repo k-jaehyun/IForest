@@ -63,6 +63,15 @@ public class AdminController {
         return adminService.updateComment(postId, commentId, requestDto);
     }
 
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        adminService.deleteComment(postId, commentId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/v1/posts/"+postId));
+        return new ResponseEntity(headers,HttpStatus.MOVED_PERMANENTLY);
+    }
+
     // 유저 전체 목록 조회
     @Secured(UserRoleEnum.Authority.ADMIN)
     @GetMapping("/users")
