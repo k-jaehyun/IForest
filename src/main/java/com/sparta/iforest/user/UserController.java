@@ -63,8 +63,7 @@ public class UserController {
         return ResponseEntity.ok(profileResponseDto);
     }
 
-    @ResponseBody
-    @PutMapping("/(userId)/password")
+    @PatchMapping("/(userId)/password")
     public ResponseEntity<?> updatePassword(@RequestBody @Valid PasswordRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails,
                                             BindingResult bindingResult) throws PasswordException {
