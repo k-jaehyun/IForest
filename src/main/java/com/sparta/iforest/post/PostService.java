@@ -69,11 +69,6 @@ public class PostService {
     public PostResponseDto updatePost(Long postId, PostRequestDto dto, String username) {
         //로그인한 사용자와 게시글 작성자 검증
         Post post = checkLoginUserAndPostUser(postId, username);
-        //수정
-//        post.setTitle(dto.getTitle());
-//        post.setContent(dto.getContent());
-
-
         post.updatePost(dto);
 
         postRepository.save(post);

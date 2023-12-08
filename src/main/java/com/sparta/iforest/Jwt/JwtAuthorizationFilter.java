@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (jwtUtil.validateToken(token)) {
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 
-                // 인증정보에 요저정보(username) 넣기
+                // 인증정보에 유저정보(username) 넣기
                 // username -> user 조회
                 String username = info.getSubject();
                 SecurityContext context = SecurityContextHolder.createEmptyContext();

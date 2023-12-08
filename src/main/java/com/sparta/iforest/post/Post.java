@@ -36,6 +36,8 @@ public class Post extends Timestamped {
    // @JoinColumn (name = "post_id")
     private List<Comment> commentList = new ArrayList<>();
 
+    private String adminUser;
+
     public Post(PostRequestDto dto, User user){
         this.user = user;
         this.title = dto.getTitle();
@@ -47,6 +49,13 @@ public class Post extends Timestamped {
     public void updatePost(PostRequestDto dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
+    }
+
+
+    public void adminUpdatePost(PostRequestDto dto, String user){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.adminUser = user;
     }
 
 }
