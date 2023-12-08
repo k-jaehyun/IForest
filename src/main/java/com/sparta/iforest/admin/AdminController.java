@@ -72,6 +72,13 @@ public class AdminController {
         return new ResponseEntity(headers,HttpStatus.MOVED_PERMANENTLY);
     }
 
+    // 댓글 목록 조회
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @GetMapping("/comments")
+    public List<CommentResponseDto> getCommentList() {
+        return adminService.getCommentList();
+    }
+
     // 유저 전체 목록 조회
     @Secured(UserRoleEnum.Authority.ADMIN)
     @GetMapping("/users")

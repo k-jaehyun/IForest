@@ -86,6 +86,10 @@ public class AdminService {
         commentRepository.delete(comment);
     }
 
+    public List<CommentResponseDto> getCommentList() {
+        return commentRepository.findAll().stream().map(CommentResponseDto::new).toList();
+    }
+
 
     public List<UserResponseDto> getUserList() {
         return userRepository.findAll().stream().map(UserResponseDto::new).toList();
