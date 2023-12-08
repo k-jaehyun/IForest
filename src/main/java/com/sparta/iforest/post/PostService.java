@@ -34,39 +34,22 @@ public class PostService {
     //선택 게시물 조회
     public PostCommentResponseDTO getPost(Long postId) {
        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-
         return new PostCommentResponseDTO(post);
     }
 
 
     //전체 게시물 조회
-    public List<PostCommentResponseDTO> getAllPost() {
-        List<PostCommentResponseDTO> postCommentResponseDTOList = new ArrayList<>();
+    public List<PostResponseDto> getAllPost() {
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
         //Entity리스트 조회
         List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         //Entity List -> Dto List
         postList.forEach(post -> {
-            var postCommentDto = new PostCommentResponseDTO(post);
-            postCommentResponseDTOList.add(postCommentDto);
+            var postDto = new PostResponseDto(post);
+            postResponseDtoList.add(postDto);
         });
-        return postCommentResponseDTOList;
+        return postResponseDtoList;
     }
-
-
-
-
-
-//    public List<PostResponseDto> getAllPost() {
-//        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-//        //Entity리스트 조회
-//        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-//        //Entity List -> Dto List
-//        postList.forEach(post -> {
-//            var postDto = new PostResponseDto(post);
-//            postResponseDtoList.add(postDto);
-//        });
-//        return postResponseDtoList;
-//    }
 
     //작성자별 게시물 조회
     public List<PostResponseDto> getPostByUser(String username) {
@@ -101,12 +84,12 @@ public class PostService {
 
 
     //게시글 삭제
-    public Post deletePost(Long postId, String username) {
+    public void deletePost(Long postId, String username) {
         //로그인한 사용자와 게시글 작성자 검증
         Post post = checkLoginUserAndPostUser(postId, username);
         //delete
         postRepository.deleteById(postId);
-        return post;
+        return;
     }
 
     private Post checkLoginUserAndPostUser(Long postId, String username) {
