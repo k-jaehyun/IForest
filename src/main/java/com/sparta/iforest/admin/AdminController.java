@@ -100,6 +100,16 @@ public class AdminController {
         return adminService.deleteUser(userId);
     }
 
+    // 공지글 등록하기
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @PostMapping("/posts/notice")
+    public ResponseEntity<CommonResponseDto> postNotice(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminService.postNotice(requestDto,userDetails);
+    }
+
+    // 회원 차단하기
+
+    // 팔로우 기능
 
 
 }

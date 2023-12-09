@@ -104,5 +104,10 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
         post.setViewCount(post.getViewCount()+1);
     }
+
+    public List<PostResponseDto> getNoticeList() {
+        return postRepository.findAllByNoticeTrue().stream().map(PostResponseDto::new).toList();
+    }
+
 }
 

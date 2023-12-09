@@ -11,6 +11,7 @@ import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.post.dto.PostRequestDto;
 import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.User;
+import com.sparta.iforest.user.UserDetailsImpl;
 import com.sparta.iforest.user.UserRepository;
 import com.sparta.iforest.user.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
@@ -120,5 +121,12 @@ public class AdminService {
         userRepository.delete(user);
 
         return ResponseEntity.ok().body(new CommonResponseDto("username: "+username+"가 삭제되었습니다",HttpStatus.OK.value()));
+    }
+
+    public ResponseEntity<CommonResponseDto> postNotice(PostRequestDto requestDto, UserDetailsImpl userDetails) {
+        Post post = new Post(requestDto, userDetails.getUser());
+        post.notifyPost();
+        postRepository.save(post);
+        return ResponseEntity.ok().body(new CommonResponseDto("공지글 등록 완료",HttpStatus.OK.value()));
     }
 }

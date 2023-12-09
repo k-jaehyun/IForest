@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<List<Post>> findByUser_Username(String username);
+
+    List<Post> findAllByNoticeTrue();
 }
