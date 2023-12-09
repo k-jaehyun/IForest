@@ -10,16 +10,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/v1/follow")
+@RequestMapping("/v1/users/{userId}")
 @RequiredArgsConstructor
 public class FollowController {
 
     private final FollowService followService;
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/follow")
     public ResponseEntity<CommonResponseDto> follow(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return followService.follow(userId,userDetails);
     }
+
+    @GetMapping("/followed")
+    public List<FollowUserResponseDto> getUsersFollowingMe(@PathVariable Long userId) {
+        return followService.getUsersFollowingUser(userId);
+    }
+
 
 }

@@ -2,9 +2,11 @@ package com.sparta.iforest.follow;
 
 import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Follow {
     @Id

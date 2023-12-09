@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
@@ -34,5 +36,10 @@ public class FollowService {
         followRepository.save(follow);
 
         return ResponseEntity.ok().body(new CommonResponseDto("팔로우 완료!", HttpStatus.OK.value()));
+    }
+
+    public List<FollowUserResponseDto> getUsersFollowingUser(Long userId) {
+        User receiver = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 유저 아이디 입니다."));
+        return followRepository.findAllByReceiverId(receiver.getId()).stream().map(FollowUserResponseDto::new).toList();
     }
 }
