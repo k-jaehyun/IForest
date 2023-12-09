@@ -6,6 +6,7 @@ import com.sparta.iforest.comment.Comment;
 import com.sparta.iforest.comment.CommentRepository;
 import com.sparta.iforest.comment.dto.CommentRequestDto;
 import com.sparta.iforest.comment.dto.CommentResponseDto;
+import com.sparta.iforest.follow.FollowRepository;
 import com.sparta.iforest.post.Post;
 import com.sparta.iforest.post.PostRepository;
 import com.sparta.iforest.post.dto.PostRequestDto;
@@ -30,7 +31,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final TokenRepository tokenRepository;
-
+    private final FollowRepository followRepository;
 
 
     //관리자 게시글 수정
@@ -111,6 +112,7 @@ public class AdminService {
         return ResponseEntity.ok().body(new CommonResponseDto(user.getRole().getAuthority()+"로 변경되었습니다.",HttpStatus.OK.value()));
     }
 
+    @Transactional
     public ResponseEntity<CommonResponseDto> deleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 user_id 입니다."));
         String username = user.getUsername();
@@ -118,6 +120,7 @@ public class AdminService {
         if(!tokenRepository.findByUser_Id(userId).isEmpty()) {
             tokenRepository.delete(tokenRepository.findByUser_Id(userId).orElseThrow());
         }
+        followRepository.deleteBySenderIdOrReceiverId(user.getId(), user.getId());
         userRepository.delete(user);
 
         return ResponseEntity.ok().body(new CommonResponseDto("username: "+username+"가 삭제되었습니다",HttpStatus.OK.value()));
