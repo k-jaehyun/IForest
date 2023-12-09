@@ -38,8 +38,17 @@ public class FollowService {
         return ResponseEntity.ok().body(new CommonResponseDto("팔로우 완료!", HttpStatus.OK.value()));
     }
 
-    public List<FollowUserResponseDto> getUsersFollowingUser(Long userId) {
+    public List<FollowUserResponseDto> getUsersFollowed(Long userId) {
         User receiver = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 유저 아이디 입니다."));
         return followRepository.findAllByReceiverId(receiver.getId()).stream().map(FollowUserResponseDto::new).toList();
+    }
+
+    public List<FollowUserResponseDto> getUsersFollowing(Long userId, UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 유저 아이디 입니다."));
+        if (!user.getId().equals(userDetails.getUser().getId())) {
+            throw new IllegalArgumentException("팔로잉 목록은 자기 자신만 확인 할 수 있습니다.");
+        }
+
+        return followRepository.findAllBySenderId(userId).stream().map(FollowUserResponseDto::new).toList();
     }
 }

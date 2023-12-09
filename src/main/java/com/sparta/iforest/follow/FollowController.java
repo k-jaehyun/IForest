@@ -25,8 +25,13 @@ public class FollowController {
     }
 
     @GetMapping("/followed")
-    public List<FollowUserResponseDto> getUsersFollowingMe(@PathVariable Long userId) {
-        return followService.getUsersFollowingUser(userId);
+    public List<FollowUserResponseDto> getUsersFollowed(@PathVariable Long userId) {
+        return followService.getUsersFollowed(userId);
+    }
+
+    @GetMapping("/following")
+    public List<FollowUserResponseDto> getUsersFollowing(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return followService.getUsersFollowing(userId, userDetails);
     }
 
 
