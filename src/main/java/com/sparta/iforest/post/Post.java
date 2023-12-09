@@ -32,7 +32,7 @@ public class Post extends Timestamped {
 
     @ManyToOne
     @JoinColumn (name = "user_name")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @OnDelete(action = OnDeleteAction.SET_NULL)  // User 삭제시 Post의 User필드는 null이 되며 Post는 남아있게하는 옵션
     private User user;
 
     @OneToMany (mappedBy = "post", orphanRemoval = true)
@@ -44,6 +44,7 @@ public class Post extends Timestamped {
     @Column
     private Long viewCount = 0L;
 
+    @Column
     private Boolean isNotice=false;
 
     public Post(PostRequestDto dto, User user){

@@ -114,7 +114,5 @@ public class AdminController {
         return adminService.banUser(userId);
     }
 
-    // 팔로우 기능
-
 
 }

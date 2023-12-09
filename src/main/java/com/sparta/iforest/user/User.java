@@ -27,6 +27,7 @@ public class User {
     @Column
     private String introduction;
 
+    @Column
     private Long kakaoId;
 
     @Column(nullable = false)
