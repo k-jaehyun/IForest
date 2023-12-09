@@ -71,6 +71,6 @@ public class Post extends Timestamped {
     }
 
     public void notifyPost() {
-        this.notice=true;
+        this.isNotice=true;
     }
 }
