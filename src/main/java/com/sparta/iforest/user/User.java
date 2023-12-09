@@ -66,4 +66,8 @@ public class User {
     public void updateRole(UserRoleEnum userRoleEnum) {
         this.role=userRoleEnum;
     }
+
+    public void banUser() {
+        this.role=UserRoleEnum.BAN;
+    }
 }

@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/v1/users/logout").permitAll()
                         .requestMatchers("/v1/users/kakao/callback/**").permitAll()
                         .requestMatchers("/v1/admin/post").hasRole(UserRoleEnum.ADMIN.toString())
+                        .requestMatchers("/**").hasAuthority(UserRoleEnum.ADMIN.getAuthority())
+                        .requestMatchers("/**").hasAuthority(UserRoleEnum.User.getAuthority())
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 

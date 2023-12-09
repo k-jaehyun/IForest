@@ -108,6 +108,11 @@ public class AdminController {
     }
 
     // 회원 차단하기
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @GetMapping("/users/{userId}/ban")
+    public ResponseEntity<CommonResponseDto> banUser(@PathVariable Long userId) {
+        return adminService.banUser(userId);
+    }
 
     // 팔로우 기능
 

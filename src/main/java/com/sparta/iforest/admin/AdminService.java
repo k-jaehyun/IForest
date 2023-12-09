@@ -129,4 +129,11 @@ public class AdminService {
         postRepository.save(post);
         return ResponseEntity.ok().body(new CommonResponseDto("공지글 등록 완료",HttpStatus.OK.value()));
     }
+
+    @Transactional
+    public ResponseEntity<CommonResponseDto> banUser(Long userId) {
+        User user= userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 user_id 입니다."));
+        user.banUser();
+        return ResponseEntity.ok().body(new CommonResponseDto(user.getUsername()+"가 ban 되었습니다.",HttpStatus.OK.value()));
+    }
 }
