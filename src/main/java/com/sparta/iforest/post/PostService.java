@@ -106,7 +106,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> getNoticeList() {
-        return postRepository.findAllByNoticeTrue().stream().map(PostResponseDto::new).toList();
+        return postRepository.findAllByIsNoticeTrue().stream().map(PostResponseDto::new).toList();
     }
 
 }
