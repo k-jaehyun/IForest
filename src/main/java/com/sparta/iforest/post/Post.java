@@ -44,7 +44,7 @@ public class Post extends Timestamped {
     @Column
     private Long viewCount = 0L;
 
-    private Boolean notice=false;
+    private Boolean isNotice=false;
 
     public Post(PostRequestDto dto, User user){
         this.user = user;
