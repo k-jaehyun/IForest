@@ -15,7 +15,7 @@ import java.util.List;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class NoticeAspect {
+public class GetNoticePostsAspect {
 
     private final PostService postService;
 
