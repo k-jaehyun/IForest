@@ -13,11 +13,11 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn (name = "sender_id")
     private User sender;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn (name = "receiver_id")
     private User receiver;
 

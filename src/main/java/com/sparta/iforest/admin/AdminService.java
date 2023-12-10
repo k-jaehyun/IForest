@@ -120,7 +120,6 @@ public class AdminService {
         if(!tokenRepository.findByUser_Id(userId).isEmpty()) {
             tokenRepository.delete(tokenRepository.findByUser_Id(userId).orElseThrow());
         }
-        followRepository.deleteBySenderIdOrReceiverId(user.getId(), user.getId());
         userRepository.delete(user);
 
         return ResponseEntity.ok().body(new CommonResponseDto("username: "+username+"가 삭제되었습니다",HttpStatus.OK.value()));
