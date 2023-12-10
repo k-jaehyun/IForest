@@ -37,12 +37,6 @@ public class User {
     @Enumerated(value = EnumType.STRING) // Enum Type을 DB 컬럼에 저장할 때 사용하는 애너테이션 // EnumType.STRING : Enum의 이름을 DB에 그대로 저장
     private UserRoleEnum role;
 
-    @OneToMany(mappedBy = "sender",cascade = CascadeType.REMOVE)
-    private List<Follow> followingList;
-
-    @OneToMany(mappedBy = "receiver",cascade = CascadeType.REMOVE)
-    private List<Follow> followedList;
-
     public User(String username, String password, String email, String introduction, UserRoleEnum role) {
         this.username = username;
         this.password = password;

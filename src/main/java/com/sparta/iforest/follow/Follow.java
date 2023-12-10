@@ -4,6 +4,8 @@ import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -15,10 +17,12 @@ public class Follow {
 
     @ManyToOne
     @JoinColumn (name = "sender_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User sender;
 
     @ManyToOne
     @JoinColumn (name = "receiver_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User receiver;
 
 
