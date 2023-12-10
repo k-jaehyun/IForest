@@ -3,11 +3,13 @@ package com.sparta.iforest.post;
 
 import com.sparta.iforest.Timestamped;
 import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
+import com.sparta.iforest.post.dto.PostRequestDto;
 import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class Post extends Timestamped {
 
     @ManyToOne
     @JoinColumn (name = "user_name")
+    @OnDelete(action = OnDeleteAction.SET_NULL)  // User 삭제시 Post의 User필드는 null이 되며 Post는 남아있게하는 옵션
     private User user;
 
     @OneToMany (mappedBy = "post", orphanRemoval = true)
@@ -37,6 +40,12 @@ public class Post extends Timestamped {
     private List<Comment> commentList = new ArrayList<>();
 
     private String adminUser;
+
+    @Column
+    private Long viewCount = 0L;
+
+    @Column
+    private Boolean isNotice=false;
 
     public Post(PostRequestDto dto, User user){
         this.user = user;
@@ -58,4 +67,11 @@ public class Post extends Timestamped {
         this.adminUser = user;
     }
 
+    public void setViewCount(long l) {
+        this.viewCount=l;
+    }
+
+    public void notifyPost() {
+        this.isNotice=true;
+    }
 }

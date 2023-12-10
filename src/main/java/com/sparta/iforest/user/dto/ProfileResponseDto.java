@@ -1,5 +1,6 @@
-package com.sparta.iforest.user;
+package com.sparta.iforest.user.dto;
 
+import com.sparta.iforest.user.User;
 import lombok.Getter;
 
 @Getter

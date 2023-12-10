@@ -1,4 +1,4 @@
-package com.sparta.iforest.post;
+package com.sparta.iforest.post.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;

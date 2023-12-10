@@ -1,8 +1,9 @@
-package com.sparta.iforest.post;
+package com.sparta.iforest.post.dto;
 
 import com.sparta.iforest.CommonResponseDto;
 import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
+import com.sparta.iforest.comment.dto.CommentResponseDto;
+import com.sparta.iforest.post.Post;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class PostCommentResponseDTO extends CommonResponseDto {
     private String title;
     private String content;
     private String user;
+    private Long accessCount;
     private List<CommentResponseDto> commentResponseDtoListList;
 
     public PostCommentResponseDTO(Post post) {
@@ -25,6 +27,7 @@ public class PostCommentResponseDTO extends CommonResponseDto {
         this.content = post.getContent();
         this.user = post.getUser().getUsername();
         this.commentResponseDtoListList = commentListToDtoList(post);
+        this.accessCount = post.getViewCount();
     }
 
 

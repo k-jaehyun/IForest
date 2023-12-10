@@ -1,5 +1,6 @@
 package com.sparta.iforest.exception;
 
+import com.sparta.iforest.exception.dto.FieldErrorDto;
 import lombok.Getter;
 
 import java.util.List;

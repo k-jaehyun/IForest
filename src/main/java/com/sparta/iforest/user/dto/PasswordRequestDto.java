@@ -1,4 +1,4 @@
-package com.sparta.iforest.user;
+package com.sparta.iforest.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

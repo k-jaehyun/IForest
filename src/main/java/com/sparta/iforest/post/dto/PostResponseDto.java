@@ -1,17 +1,10 @@
-package com.sparta.iforest.post;
+package com.sparta.iforest.post.dto;
 
 
 import com.sparta.iforest.CommonResponseDto;
-import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
-import lombok.Data;
+import com.sparta.iforest.post.Post;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

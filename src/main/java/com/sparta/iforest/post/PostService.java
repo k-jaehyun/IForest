@@ -1,7 +1,8 @@
 package com.sparta.iforest.post;
 
-import com.sparta.iforest.comment.Comment;
-import com.sparta.iforest.comment.CommentResponseDto;
+import com.sparta.iforest.post.dto.PostCommentResponseDTO;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.User;
 import com.sparta.iforest.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,16 @@ public class PostService {
             throw new IllegalArgumentException("작성자만 게시글을 수정/삭제 할 수 있습니다.");
         }
         return post;
+    }
+
+    @Transactional
+    public void incrementViewCount(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        post.setViewCount(post.getViewCount()+1);
+    }
+
+    public List<PostResponseDto> getNoticeList() {
+        return postRepository.findAllByIsNoticeTrue().stream().map(PostResponseDto::new).toList();
     }
 
 }

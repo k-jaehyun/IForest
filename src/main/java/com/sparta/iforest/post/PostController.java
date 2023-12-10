@@ -1,7 +1,11 @@
 package com.sparta.iforest.post;
 
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.post.dto.PostCommentResponseDTO;
+import com.sparta.iforest.post.dto.PostRequestDto;
+import com.sparta.iforest.post.dto.PostResponseDto;
 import com.sparta.iforest.user.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -63,7 +66,7 @@ public class PostController {
 
     //작성자별 게시물 조회
     @GetMapping("/request-param")
-    public ResponseEntity<List<PostResponseDto>> getPostByUser(@RequestParam ("user") String username){
+    public ResponseEntity<List<PostResponseDto>> getPostByUser(@RequestParam ("user") String username, HttpServletResponse response){
         List<PostResponseDto> postResponseDtoList = postService.getPostByUser(username);
         return ResponseEntity.ok().body(postResponseDtoList);
         //캐치 해야함

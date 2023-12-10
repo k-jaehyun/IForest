@@ -1,6 +1,7 @@
 package com.sparta.iforest.exception;
 
 import com.sparta.iforest.CommonResponseDto;
+import com.sparta.iforest.exception.dto.FieldErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
