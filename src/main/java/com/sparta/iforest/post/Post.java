@@ -2,10 +2,14 @@ package com.sparta.iforest.post;
 
 
 import com.sparta.iforest.Timestamped;
+import com.sparta.iforest.likes.Likes;
 import com.sparta.iforest.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +29,9 @@ public class Post extends Timestamped {
     @ManyToOne
     @JoinColumn (name = "user_name")
     private User user;
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Likes> likesList = new ArrayList<>();
 
     public Post(PostRequestDto dto, User user){
         this.user = user;
